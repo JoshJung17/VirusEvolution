@@ -21,7 +21,7 @@ Virus::Virus(vector<double> attack, double mortality_rate): attack{attack}, mort
 }
 
 void Virus::normalize() {
-    double sum;
+    double sum = 0;
     for (double &c: attack) {
         if (c < 0) c = 0;
         sum += c * c;
@@ -62,7 +62,7 @@ Virus Virus::mutate() {
     return Virus(new_attack, new_mortality);
 }
 
-bool Virus::is_same(Virus &v) {
+bool Virus::is_same(const Virus &v) const {
     double sum = 0;
     for (int i = 0; i < attack.size(); ++i) {
         double d = attack[i] - v.attack[i];
