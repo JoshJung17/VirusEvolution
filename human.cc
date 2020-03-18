@@ -67,8 +67,9 @@ void Human::moveRandom() {
     pos.second = min(BOARD_HEIGHT, pos.second);
 
     if (pos.first < BAT_CAVE_X && pos.second < BAT_CAVE_Y) {
-        if (randUnif() < BAT_INFECT_P) {
-            viruses.push_back(Virus());
+        Virus v;
+        if (randUnif() < BAT_INFECT_P && v.infect(*this)) {
+            viruses.push_back(v);
         }
     }
 }

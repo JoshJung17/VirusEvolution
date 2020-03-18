@@ -40,6 +40,10 @@ bool Virus::kills(Human &h) {
 }
 
 bool Virus::infect(Human &h) {
+    for (Virus &v: h.viruses) {
+        if (is_same(v))
+            return false;
+    }
     double infectiousness = 0;
     for (int i = 0; i < attack.size(); ++i) {
         infectiousness += max(0., attack[i] - h.immune_system[i]);
@@ -56,4 +60,16 @@ Virus Virus::mutate() {
     }
     double new_mortality = mortality_rate + (randUnif() - 0.5) * VIRUS_MORTALITY_MUTATE;
     return Virus(new_attack, new_mortality);
+}
+
+bool Virus::is_same(Virus &v) {
+    double sum = 0;
+    for (int i = 0; i < attack.size(); ++i) {
+        double d = attack[i] - v.attack[i];
+        sum += d * d;
+    }
+    sum = sqrt(sum);
+    if (sum < SAME_VIRUS_THR) {
+        return true;
+    }
 }

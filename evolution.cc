@@ -2,11 +2,12 @@
 #include "human.h"
 #include "virus.h"
 #include "constants.h"
+#include "logger.h"
 
 int main() {
-    double avg_viruses;
-    int pop;
-    cout << "timestep,pop,avg_viruses" << endl;
+    Logger logger;
+
+    logger.init();
 
     vector<vector<Human>> humans(2);
     humans[0] = vector<Human>(INIT_HUMANS);
@@ -15,13 +16,9 @@ int main() {
         vector<Human> &nxt = humans[(t+1)%2];
         nxt.clear();
 
-        avg_viruses = 0;
         for (Human &h: cur) {
             h.moveRandom();
-            avg_viruses += h.viruses.size();
         }
-        pop = cur.size();
-        avg_viruses /= pop;
         for (int i = 0; i < cur.size(); ++i) {
             for (int j = i+1; j < cur.size(); ++j) {
                 if (randUnif() < 0.5) {
@@ -38,6 +35,7 @@ int main() {
                 nxt.push_back(h);
             }
         }
-        cout << t << ',' << pop << ',' << avg_viruses << endl;
+
+        logger.log(t, cur);
     }
 }

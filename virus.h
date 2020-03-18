@@ -15,6 +15,7 @@ class Virus{
     bool kills(Human &h);
     bool infect(Human &h);
     Virus mutate();
+    bool is_same(Virus &v);
 };
 
 #endif

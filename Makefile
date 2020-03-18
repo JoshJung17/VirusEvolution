@@ -4,10 +4,10 @@ CXXFLAGS := $(CXXFLAGS) -O3 -march=native -flto
 
 CXX = g++
 
-evolution: evolution.o human.o virus.o random.o constants.h
-	$(CXX) $(CXXFLAGS) -o evolution evolution.o human.o virus.o random.o
+evolution: evolution.o human.o virus.o random.o constants.h logger.o
+	$(CXX) $(CXXFLAGS) -o evolution evolution.o human.o virus.o random.o logger.o
 
-evolution.o: evolution.cc constants.h
+evolution.o: evolution.cc constants.h logger.h
 	$(CXX) $(CXXFLAGS) -c evolution.cc
 
 human.o: human.cc constants.h
@@ -18,6 +18,9 @@ virus.o: virus.cc constants.h
 
 random.o: random.cc constants.h
 	$(CXX) $(CXXFLAGS) -c random.cc
+
+logger.o: logger.cc constants.h
+	$(CXX) $(CXXFLAGS) -c logger.cc
 
 clean:
 	rm -f human.o virus.o evolution.o random.o evolution
