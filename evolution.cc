@@ -16,16 +16,22 @@ int main() {
         vector<Human> &nxt = humans[(t+1)%2];
         nxt.clear();
 
+        map<pair<int,int>, vector<Human*>> human_map;
+
         for (Human &h: cur) {
             h.moveRandom();
+            int x = (int)(h.pos.first / INFECT_DISTANCE);
+            int y = (int)(h.pos.second / INFECT_DISTANCE);
+            human_map[make_pair(x,y)].push_back(&h);
         }
         for (int i = 0; i < cur.size(); ++i) {
-            for (int j = i+1; j < cur.size(); ++j) {
-                if (randUnif() < 0.5) {
-                    cur[i].interact(cur[j]);
-                }
-                else {
-                    cur[j].interact(cur[i]);
+            int x = (int)(cur[i].pos.first / INFECT_DISTANCE);
+            int y = (int)(cur[i].pos.second / INFECT_DISTANCE);
+            for (int p = -1; p < 2; ++p) {
+                for (int q = -1; q < 2; ++q) {
+                    for (Human *h: human_map[make_pair(x+p, y+q)]) {
+                        cur[i].interact(*h);
+                    }
                 }
             }
         }

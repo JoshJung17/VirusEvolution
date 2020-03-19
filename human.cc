@@ -53,13 +53,13 @@ void Human::moveRandom() {
     }
     viruses = new_viruses;
 
-    pos.first = randUnif() * BOARD_WIDTH;
-    pos.second = randUnif() * BOARD_HEIGHT;
     /*
-    double theta = randUnif() * 2 * PI;
-    pos.first += HUMAN_MOVE_DIS * cos(theta);
-    pos.second += HUMAN_MOVE_DIS * sin(theta);
+    pos.first = randunif() * board_width;
+    pos.second = randunif() * board_height;
     */
+    double theta = randUnif() * 2 * PI;
+    pos.first += randUnif() * HUMAN_MOVE_DIS * cos(theta);
+    pos.second += randUnif() * HUMAN_MOVE_DIS * sin(theta);
 
     pos.first = max(0., pos.first);
     pos.first = min(BOARD_WIDTH, pos.first);
