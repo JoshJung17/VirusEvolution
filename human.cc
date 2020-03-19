@@ -3,14 +3,8 @@
 #include "random.h"
 #include "constants.h"
 #include "human.h"
-// INFECT_DISTANCE
-// VECTOR_SIZE
-// VIRUS_HALFLIFE
-// MAX_IMMUNE
-// MAX_ATTACK
 
 using namespace std;
-double PI = 3.141592653589;
 
 double Human::dis(pair<int,int> p1, pair<int,int> p2) {
     double dx = p1.first - p2.first;
@@ -31,6 +25,7 @@ Human::Human() {
     }
     pos.first = randUnif() * BOARD_WIDTH;
     pos.second = randUnif() * BOARD_HEIGHT;
+    theta = randUnif() * 2 * PI;
 }
 
 bool Human::checkDie() {
@@ -53,18 +48,18 @@ void Human::moveRandom() {
     }
     viruses = new_viruses;
 
-    /*
-    pos.first = randunif() * board_width;
-    pos.second = randunif() * board_height;
-    */
-    double theta = randUnif() * 2 * PI;
+    theta += (randUnif() - 0.5) * HUMAN_THETA;
     pos.first += randUnif() * HUMAN_MOVE_DIS * cos(theta);
     pos.second += randUnif() * HUMAN_MOVE_DIS * sin(theta);
 
-    pos.first = max(0., pos.first);
-    pos.first = min(BOARD_WIDTH, pos.first);
-    pos.second = max(0., pos.second);
-    pos.second = min(BOARD_HEIGHT, pos.second);
+    if (pos.first < 0)
+        pos.first += BOARD_WIDTH;
+    if (pos.first > BOARD_WIDTH)
+        pos.first -= BOARD_WIDTH;
+    if (pos.second < 0)
+        pos.second += BOARD_HEIGHT;
+    if (pos.second > BOARD_HEIGHT)
+        pos.second -= BOARD_HEIGHT;
 
     if (pos.first < BAT_CAVE_X && pos.second < BAT_CAVE_Y) {
         Virus v;

@@ -1,4 +1,5 @@
 #include "logger.h"
+#include "virus.h"
 #include <bits/stdc++.h>
 
 Logger::Logger(): of{}, log_stream{cout.rdbuf()} {}
@@ -6,57 +7,51 @@ Logger::Logger(): of{}, log_stream{cout.rdbuf()} {}
 Logger::Logger(string filename): of{}, log_stream{(of.open(filename), of.rdbuf())} {}
 
 void Logger::init() {
-    log_stream << "t,pop,avg_viruses,virus_1_cnt,virus_1_genome\n";
+    log_stream << "[";
+}
+
+string Logger::key(string key) {
+    return "\"" + key + "\": ";
 }
 
 void Logger::log(int t, vector<Human> humans) {
-    log_stream << t << ',' << humans.size() << ',';
-    int tot_viruses = 0;
-    vector<const Virus*> all_viruses;
-    for (const Human &h: humans) {
-        tot_viruses += h.viruses.size();
-        for (const Virus &v: h.viruses)
-            all_viruses.push_back(&v);
-    }
-    log_stream << (double)tot_viruses/humans.size() << ',';
-    vector<int> cnts(all_viruses.size());
-    int maxi = 0;
-    int maxIdx = 0;
-    for (int i = 0; i < all_viruses.size(); ++i) {
-        const Virus *v1 = all_viruses[i];
-        for (int j = 0; j < all_viruses.size(); ++j) {
-            const Virus *v2 = all_viruses[j];
-            if (v1->is_same(*v2)) {
-                ++cnts[i];
-                if (cnts[i] > maxi) {
-                    maxi = cnts[i];
-                    maxIdx = i;
-                }
-            }
-        }
-    }
-    if (all_viruses.size() == 0) {
+    if (t>0)
         log_stream << ",\n";
-    }
-    else {
-        log_stream << maxi << ',';
-        log_stream << '"';
-        for (double c: all_viruses[maxIdx]->attack) {
-            log_stream << c << ",";
+    log_stream << "{ ";
+    log_stream << key("iteration") << t;
+    log_stream << ", ";
+    log_stream << key("num_humans") << humans.size();
+    log_stream << ", ";
+    log_stream << key("humans") << "[ ";
+    bool f1 = 0;
+    for (Human &h: humans) {
+        if (f1) log_stream << ",\n";
+        f1 = 1;
+        log_stream << "{ ";
+        log_stream << key("x") << h.pos.first << ", ";
+        log_stream << key("y") << h.pos.second << ", ";
+        log_stream << key("num_viruses") << h.viruses.size() << ", ";
+        log_stream << key("viruses") << "[ ";
+        bool f2 = 0;
+        for (Virus &v: h.viruses) {
+            if (f2) log_stream << ", ";
+            f2 = 1;
+            log_stream << "[ ";
+            bool f3 = 0;
+            for (double c: v.attack) {
+                if (f3) log_stream << ", ";
+                f3 = 1;
+                log_stream << c;
+            }
+            log_stream << "]";
         }
-        log_stream << "\"\n";
+        log_stream << "]";
+        log_stream << "}";
     }
-
-    /*
-    sort(all_viruses.begin(), all_viruses.end(), [](const Virus *a, const Virus *b) { 
-        return a->attack < b->attack;
-    });
-    for (int i = 0; i < all_viruses.size(); ++i) {
-        Virus *v1 = all_viruses[i];
-        for (int j = i; j < all_viruses.size(); ++j) {
-            Virus *v2 = all_viruses[j];
-        }
-    }
-    */
+    log_stream << "]";
+    log_stream << "}";
 }
 
+void Logger::close() {
+    log_stream << "]" << endl;
+}

@@ -7,6 +7,7 @@
 using namespace std;
 
 class Human{
+    double theta;
   public:
     pair<double,double> pos;
     vector<Virus> viruses;

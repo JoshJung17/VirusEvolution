@@ -44,4 +44,5 @@ int main() {
 
         logger.log(t, cur);
     }
+    logger.close();
 }
