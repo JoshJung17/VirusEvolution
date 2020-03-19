@@ -31,6 +31,14 @@ void Logger::log(int t, vector<Human> humans) {
         log_stream << key("x") << h.pos.first << ", ";
         log_stream << key("y") << h.pos.second << ", ";
         log_stream << key("num_viruses") << h.viruses.size() << ", ";
+        log_stream << key("immune_system") << "[ ";
+        bool f4 = 0;
+        for (double c: h.immune_system) {
+            if (f4) log_stream << ", ";
+            f4 = 1;
+            log_stream << c;
+        }
+        log_stream << "], ";
         log_stream << key("viruses") << "[ ";
         bool f2 = 0;
         for (Virus &v: h.viruses) {
