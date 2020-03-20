@@ -22,6 +22,7 @@ const double VIRUS_MUTATE = 0.01;
 const double VIRUS_MORTALITY_MUTATE = 0.05 / TIME_RES;
 const double SAME_VIRUS_THR = 0.03;
 
+const double HUMAN_MUTATE = 0.1;
 const double BIRTH_RATE = 0.02;
 const double DEATH_RATE = 0.02;
 

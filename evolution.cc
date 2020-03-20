@@ -39,12 +39,11 @@ int main() {
         }
         // check die, growth
         for (Human &h: cur) {
-            double pop_rate = randUnif();
-            if (h.checkDie() && pop_rate < DEATH_RATE) {
+            if (h.checkDie() && randUnif() < DEATH_RATE) {
                 continue;
             }
             nxt.push_back(h);
-            if (pop_rate < BIRTH_RATE) {
+            if (randUnif() < BIRTH_RATE) {
                 Human newborn = h.reproduce();
                 nxt.push_back(newborn);
             }

@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 #include "virus.h"
 #include "random.h"
+#include "lib.h"
 #include "constants.h"
 #include "human.h"
 
@@ -27,6 +28,9 @@ Human::Human() {
     pos.second = randUnif() * BOARD_HEIGHT;
     theta = randUnif() * 2 * PI;
 }
+
+Human::Human(vector<double> immune_system, pair<double, double> pos, vector<Virus> viruses):
+    immune_system{immune_system}, pos{pos}, viruses{viruses} {}
 
 bool Human::checkDie() {
     for (Virus v: viruses) {
@@ -80,5 +84,6 @@ void Human::interact(Human &other) {
 }
 
 Human Human::reproduce() {
-    return Human();
+    vector<double> new_immune_system = change(immune_system, HUMAN_MUTATE);
+    return Human(new_immune_system, pos, viruses);
 }
