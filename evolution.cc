@@ -18,12 +18,14 @@ int main() {
 
         map<pair<int,int>, vector<Human*>> human_map;
 
+        // move
         for (Human &h: cur) {
             h.moveRandom();
             int x = (int)(h.pos.first / INFECT_DISTANCE);
             int y = (int)(h.pos.second / INFECT_DISTANCE);
             human_map[make_pair(x,y)].push_back(&h);
         }
+        // infect
         for (int i = 0; i < cur.size(); ++i) {
             int x = (int)(cur[i].pos.first / INFECT_DISTANCE);
             int y = (int)(cur[i].pos.second / INFECT_DISTANCE);
@@ -35,10 +37,15 @@ int main() {
                 }
             }
         }
-
+        // check die, growth
         for (Human &h: cur) {
-            if (!h.checkDie()) {
-                nxt.push_back(h);
+            if (h.checkDie() && randUnif() < DEATH_RATE) {
+                continue;
+            }
+            nxt.push_back(h);
+            if (randUnif() < BIRTH_RATE) {
+                Human newborn = h.reproduce();
+                nxt.push_back(newborn);
             }
         }
 
