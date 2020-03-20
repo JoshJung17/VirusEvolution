@@ -78,3 +78,7 @@ void Human::interact(Human &other) {
         }
     }
 }
+
+Human Human::reproduce() {
+    return Human();
+}

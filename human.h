@@ -17,6 +17,7 @@ class Human{
     bool checkDie();
     void moveRandom();
     void interact(Human &other);
+    Human reproduce();
 };
 
 #endif

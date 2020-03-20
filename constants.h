@@ -22,6 +22,9 @@ const double VIRUS_MUTATE = 0.01;
 const double VIRUS_MORTALITY_MUTATE = 0.05 / TIME_RES;
 const double SAME_VIRUS_THR = 0.03;
 
-const int INIT_HUMANS = 300;
+const double BIRTH_RATE = 0.02;
+const double DEATH_RATE = 0.02;
+
+const int INIT_HUMANS = 500;
 const int TOTAL_TIME = 2000;
 #endif
